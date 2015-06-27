@@ -115,7 +115,7 @@ refesh_hubic_token = os.popen("hubic.py --refresh").read()
 print refesh_hubic_token
 upload_backup_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ /usr/backup/*" % (hubic_remote_dir)).read()
 print upload_backup_to_hubic
-python hubic.py --swift -- upload default/backupvpsdime/ /usr/backup/*
+
 filelist_hubic = os.popen("python hubic.py --swift -- list default").read().split("\n")
 for del_file in filelist_hubic[1:-1]:
         if re.search(r'.*\-%d\.tar\.gz' % (new_id - day_remote_store), del_file):
