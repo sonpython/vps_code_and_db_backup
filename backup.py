@@ -54,13 +54,13 @@ for folder in SubDirPath(source):
 	if os.system(tar_command) == 0:
 		print "Successful backup to", target
 	else:
-		print "Backup FAILED"
+		print "Backup %s FAILED" % (folder.split("/")[-1])
 
 del_old_backup_command = "rm -f {0}/*-{1}.tar.gz".format(target_dir, new_id - day_store)
 if os.system(del_old_backup_command) == 0:
 	print("Successful del oldest backup file")
 else:
-	print("del old Backup file FAILED")
+	print("del old Backup file FAILED on %s" % (del_old_backup_command))  
 
 ########## BACKUP DATABASE #########
 
@@ -83,7 +83,7 @@ del_old_db_backup_command = "rm -f {0}/*-{1}.sql.gz".format(target_db_dir, new_i
 if os.system(del_old_backup_command) == 0:
 	print("Successful del oldest backup file")
 else:
-	print("del old Backup file FAILED")
+	print("del old Backup file FAILED on %s" % (del_old_db_backup_command))
 
 ### transfer to SFTP stuff ###
 
@@ -95,7 +95,7 @@ for aa in onlyfiles:
 				sftp.put(aa)  # upload file to public/ on remote
 			except Exception as e:
 				print e
-			print("transfer backup code to SFTP OK")
+			print("transfer backup %s to SFTP OK" % (aa))
 onlyfiles_db = glob.glob(target_db_dir + "/"  + "*.gz")
 for bb in onlyfiles_db:
         with pysftp.Connection(host=sftp_hostname, username=sftp_username, password=sftp_password, port=sftp_port) as sftp:
@@ -104,4 +104,4 @@ for bb in onlyfiles_db:
                             	sftp.put(bb)  # upload file to public/ on remote
                         except Exception as e:
                                 print e
-                        print("transfer database to SFTP OK")
+                        print("transfer database to SFTP OK" % (bb))
