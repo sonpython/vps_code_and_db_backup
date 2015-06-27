@@ -3,14 +3,17 @@ import time
 import glob
 import pysftp
 
-username =
-password =
-hostname =
+sftpinfofile = open('sftpinfo.txt', 'r')
+sftpinfo = list(sftpinfofile)
 
-sftp_hostname =
-sftp_username =
-sftp_password = 
-sftp_port = 
+username = sftpinfo[0].rstrip('\n')
+password = sftpinfo[1].rstrip('\n')
+hostname = sftpinfo[2].rstrip('\n')
+
+sftp_hostname = sftpinfo[3].rstrip('\n')
+sftp_username = sftpinfo[4].rstrip('\n')
+sftp_password = sftpinfo[5].rstrip('\n')
+sftp_port = sftpinfo[6].rstrip('\n')
 
 source = '/home'
 
@@ -47,7 +50,7 @@ if not os.path.exists(target_dir):
 for folder in SubDirPath(source):
 	target = target_dir + os.sep + now + "-" + folder.split("/")[-1] + "-" + str(new_id) + ".tar.gz"
 	# 5. We use the zip command to put the files in a zip archive.
-	tar_command = "tar -zcPf --ignore-failed-read {0} {1}".format(target, folder)
+	tar_command = "tar -zcPf {0} {1}".format(target, folder)
 	if os.system(tar_command) == 0:
 		print "Successful backup to", target
 	else:
