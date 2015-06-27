@@ -1,6 +1,7 @@
 import os
 import time
 import glob
+import re
 import pysftp
 
 sftpinfofile = open('sftpinfo.txt', 'r')
