@@ -20,7 +20,10 @@ source = '/home'
 target_dir = "/usr/backup/code"
 target_db_dir = "/usr/backup/database"
 
+hubic_remote_dir = "backupvpsdime"
+
 day_store = 3
+day_remote_store = 1
 
 # Create variable called now to give current date and time.
 now = time.strftime('%Y%m%d-%H%M%S')
@@ -87,21 +90,34 @@ else:
 
 ### transfer to SFTP stuff ###
 
-onlyfiles = glob.glob(target_dir + "/" + "*.gz")
-for aa in onlyfiles:
-	with pysftp.Connection(host=sftp_hostname, username=sftp_username, password=sftp_password, port=sftp_port) as sftp:
-		with sftp.cd('backupvpsdime'):           # temporarily chdir to public
-			try:
-				sftp.put(aa)  # upload file to public/ on remote
-			except Exception as e:
-				print e
-			print("transfer backup %s to SFTP OK" % (aa))
-onlyfiles_db = glob.glob(target_db_dir + "/"  + "*.gz")
-for bb in onlyfiles_db:
-        with pysftp.Connection(host=sftp_hostname, username=sftp_username, password=sftp_password, port=sftp_port) as sftp:
-                with sftp.cd('backupvpsdime'):           # temporarily chdir to public
-                        try:
-                            	sftp.put(bb)  # upload file to public/ on remote
-                        except Exception as e:
-                                print e
-                        print("transfer database to SFTP OK" % (bb))
+# onlyfiles = glob.glob(target_dir + "/" + "*.gz")
+# for aa in onlyfiles:
+# 	with pysftp.Connection(host=sftp_hostname, username=sftp_username, password=sftp_password, port=sftp_port) as sftp:
+# 		with sftp.cd('backupvpsdime'):           # temporarily chdir to public
+# 			try:
+# 				sftp.put(aa)  # upload file to public/ on remote
+# 			except Exception as e:
+# 				print e
+# 			print("transfer backup %s to SFTP OK" % (aa))
+# onlyfiles_db = glob.glob(target_db_dir + "/"  + "*.gz")
+# for bb in onlyfiles_db:
+#         with pysftp.Connection(host=sftp_hostname, username=sftp_username, password=sftp_password, port=sftp_port) as sftp:
+#                 with sftp.cd('backupvpsdime'):           # temporarily chdir to public
+#                         try:
+#                             	sftp.put(bb)  # upload file to public/ on remote
+#                         except Exception as e:
+#                                 print e
+#                         print("transfer database to SFTP OK" % (bb))
+
+### transfer to hubic ###
+
+refesh_hubic_token = os.popen("hubic.py --refresh").read()
+print refesh_hubic_token
+upload_backup_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ /usr/backup/*" % (hubic_remote_dir)).read()
+print upload_backup_to_hubic
+python hubic.py --swift -- upload default/backupvpsdime/ /usr/backup/*
+filelist_hubic = os.popen("python hubic.py --swift -- list default").read().split("\n")
+for del_file in filelist_hubic[1:-1]:
+        if re.search(r'.*\-%d\.tar\.gz' % (new_id - day_remote_store), del_file):
+        	del_file_result = os.popen("python hubic.py --swift -- delete default %s" % (del_file)).read()
+            print del_file_result
