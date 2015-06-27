@@ -120,4 +120,4 @@ filelist_hubic = os.popen("python hubic.py --swift -- list default").read().spli
 for del_file in filelist_hubic[1:-1]:
         if re.search(r'.*\-%d\.tar\.gz' % (new_id - day_remote_store), del_file):
         	del_file_result = os.popen("python hubic.py --swift -- delete default %s" % (del_file)).read()
-            print del_file_result
+        	print del_file_result
