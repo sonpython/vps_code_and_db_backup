@@ -111,7 +111,7 @@ else:
 
 ### transfer to hubic ###
 
-refesh_hubic_token = os.popen("hubic.py --refresh").read()
+refesh_hubic_token = os.popen("python hubic.py --refresh").read()
 print refesh_hubic_token
 upload_backup_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ /usr/backup/*" % (hubic_remote_dir)).read()
 print upload_backup_to_hubic
