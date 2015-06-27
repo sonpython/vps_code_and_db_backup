@@ -13,7 +13,7 @@ hostname = sftpinfo[2].rstrip('\n')
 sftp_hostname = sftpinfo[3].rstrip('\n')
 sftp_username = sftpinfo[4].rstrip('\n')
 sftp_password = sftpinfo[5].rstrip('\n')
-sftp_port = sftpinfo[6].rstrip('\n')
+sftp_port = int(sftpinfo[6].rstrip('\n'))
 
 source = '/home'
 
