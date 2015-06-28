@@ -128,12 +128,12 @@ print refesh_hubic_token
 
 # transfer code
 for aa in code_list:
-	upload_backup_code_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ /usr/backup/%s" % (hubic_remote_dir, aa)).read()
+	upload_backup_code_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ %s" % (hubic_remote_dir, aa)).read()
 	print upload_backup_code_to_hubic
 
 #transfer db
 for bb in database_list:
-	upload_backup_db_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ /usr/backup/%s" % (hubic_remote_dir, bb)).read()
+	upload_backup_db_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ %s.gz" % (hubic_remote_dir, bb)).read()
 	print upload_backup_db_to_hubic
 
 #delete old backup files
