@@ -65,7 +65,7 @@ for folder in SubDirPath(source):
 
 del_old_backup_command = "rm -f {0}/*-{1}.tar.gz".format(target_dir, new_id - day_store)
 if os.system(del_old_backup_command) == 0:
-	print("Successful del oldest backup file")
+	print("Successful del oldest backup code file")
 else:
 	print("del old Backup file FAILED on %s" % (del_old_backup_command))  
 
@@ -88,7 +88,7 @@ for database in os.popen(database_list_command).readlines():
 
 del_old_db_backup_command = "rm -f {0}/*-{1}.sql.gz".format(target_db_dir, new_id - day_store)
 if os.system(del_old_backup_command) == 0:
-	print("Successful del oldest backup file")
+	print("Successful del oldest backup database file")
 else:
 	print("del old Backup file FAILED on %s" % (del_old_db_backup_command))
 
