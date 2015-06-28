@@ -49,10 +49,10 @@ new_id = getnewid('backup')
 # Create target directory if it is not present
 # If statement checks whether the file directory exists
 if not os.path.exists(target_dir):
-	os.mkdir(target_dir)
+	os.makedirs(target_dir)
 
 if not os.path.exists(target_db_dir):
-	os.mkdir(target_db_dir)
+	os.makedirs(target_db_dir)
 
 for folder in SubDirPath(source):
 	target = target_dir + os.sep + now + "-" + folder.split("/")[-1] + "-" + str(new_id) + ".tar.gz"
