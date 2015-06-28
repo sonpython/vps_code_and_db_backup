@@ -115,11 +115,24 @@ else:
 
 ### transfer to hubic ###
 
+# refresh new token
 refesh_hubic_token = os.popen("python hubic.py --refresh").read()
 print refesh_hubic_token
-upload_backup_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ /usr/backup/*" % (hubic_remote_dir)).read()
-print upload_backup_to_hubic
 
+
+# transfer code
+onlynewcodefiles = glob.glob(target_dir + "/" + new_id + "-tar.gz")
+for aa in onlynewcodefiles:
+	upload_backup_code_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ /usr/backup/%s" % (hubic_remote_dir, aa)).read()
+	print upload_backup_code_to_hubic
+
+#transfer db
+onlynewdbfiles = glob.glob(target_db_dir + "/" + new_id + "-tar.gz")
+for bb in onlynewdbfiles:
+	upload_backup_db_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ /usr/backup/%s" % (hubic_remote_dir, bb)).read()
+	print upload_backup_db_to_hubic
+
+#delete old backup files
 filelist_hubic = os.popen("python hubic.py --swift -- list default").read().split("\n")
 for del_file in filelist_hubic[1:-1]:
         if re.search(r'.*\-%d\.tar\.gz' % (new_id - day_remote_store), del_file):
