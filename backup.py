@@ -1,8 +1,8 @@
 import os
 import time
 import glob
-import re
 import pysftp
+import re
 
 sftpinfofile = open('sftpinfo.txt', 'r')
 sftpinfo = list(sftpinfofile)
@@ -51,6 +51,9 @@ new_id = getnewid('backup')
 if not os.path.exists(target_dir):
 	os.mkdir(target_dir)
 
+if not os.path.exists(target_db_dir):
+	os.mkdir(target_db_dir)
+
 for folder in SubDirPath(source):
 	target = target_dir + os.sep + now + "-" + folder.split("/")[-1] + "-" + str(new_id) + ".tar.gz"
 	# 5. We use the zip command to put the files in a zip archive.
@@ -62,7 +65,7 @@ for folder in SubDirPath(source):
 
 del_old_backup_command = "rm -f {0}/*-{1}.tar.gz".format(target_dir, new_id - day_store)
 if os.system(del_old_backup_command) == 0:
-	print("Successful del oldest backup code file")
+	print("Successful del oldest backup file")
 else:
 	print("del old Backup file FAILED on %s" % (del_old_backup_command))  
 
@@ -85,7 +88,7 @@ for database in os.popen(database_list_command).readlines():
 
 del_old_db_backup_command = "rm -f {0}/*-{1}.sql.gz".format(target_db_dir, new_id - day_store)
 if os.system(del_old_backup_command) == 0:
-	print("Successful del oldest backup database file")
+	print("Successful del oldest backup file")
 else:
 	print("del old Backup file FAILED on %s" % (del_old_db_backup_command))
 
@@ -121,4 +124,4 @@ filelist_hubic = os.popen("python hubic.py --swift -- list default").read().spli
 for del_file in filelist_hubic[1:-1]:
         if re.search(r'.*\-%d\.tar\.gz' % (new_id - day_remote_store), del_file):
         	del_file_result = os.popen("python hubic.py --swift -- delete default %s" % (del_file)).read()
-        	print del_file_result
+            print del_file_result
