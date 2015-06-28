@@ -121,7 +121,7 @@ print refesh_hubic_token
 
 
 # transfer code
-onlynewcodefiles = glob.glob(target_dir + "/" + new_id + "-tar.gz")
+onlynewcodefiles = glob.glob(target_dir + "/" + str(new_id) + "-tar.gz")
 for aa in onlynewcodefiles:
 	upload_backup_code_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ /usr/backup/%s" % (hubic_remote_dir, aa)).read()
 	print upload_backup_code_to_hubic
