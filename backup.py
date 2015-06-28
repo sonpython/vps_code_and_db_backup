@@ -127,7 +127,7 @@ for aa in onlynewcodefiles:
 	print upload_backup_code_to_hubic
 
 #transfer db
-onlynewdbfiles = glob.glob(target_db_dir + "/" + new_id + "-tar.gz")
+onlynewdbfiles = glob.glob(target_db_dir + "/" + str(new_id) + "-tar.gz")
 for bb in onlynewdbfiles:
 	upload_backup_db_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ /usr/backup/%s" % (hubic_remote_dir, bb)).read()
 	print upload_backup_db_to_hubic
