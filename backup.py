@@ -3,6 +3,7 @@ import time
 import glob
 import pysftp
 import re
+import socket
 
 sftpinfofile = open('sftpinfo.txt', 'r')
 sftpinfo = list(sftpinfofile)
@@ -21,10 +22,13 @@ source = '/home'
 target_dir = "/usr/backup/code"
 target_db_dir = "/usr/backup/database"
 
-hubic_remote_dir = "backupvpsdime"
+hubic_remote_dir = str(socket.gethostbyname(socket.gethostname()))
 
 day_store = 3
 day_remote_store = 1
+
+code_list = []
+database_list = []
 
 # Create variable called now to give current date and time.
 now = time.strftime('%Y%m%d-%H%M%S')
@@ -56,6 +60,7 @@ if not os.path.exists(target_db_dir):
 
 for folder in SubDirPath(source):
 	target = target_dir + os.sep + now + "-" + folder.split("/")[-1] + "-" + str(new_id) + ".tar.gz"
+	code_list.append(target)
 	# 5. We use the zip command to put the files in a zip archive.
 	tar_command = "tar -zcPf {0} {1}".format(target, folder)
 	if os.system(tar_command) == 0:
@@ -84,6 +89,7 @@ for database in os.popen(database_list_command).readlines():
 	if database == 'performance_schema':
 		continue
 	filename = "%s/%s-%s-%s.sql" % (target_db_dir, now, database, str(new_id))
+	database_list.append(filename)
 	os.popen("mysqldump -u %s -p%s -h %s -e --opt -c %s | gzip -c > %s.gz" % (username, password, hostname, database, filename))
 
 del_old_db_backup_command = "rm -f {0}/*-{1}.sql.gz".format(target_db_dir, new_id - day_store)
@@ -121,14 +127,12 @@ print refesh_hubic_token
 
 
 # transfer code
-onlynewcodefiles = glob.glob(target_dir + "/" + str(new_id) + "-tar.gz")
-for aa in onlynewcodefiles:
+for aa in code_list:
 	upload_backup_code_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ /usr/backup/%s" % (hubic_remote_dir, aa)).read()
 	print upload_backup_code_to_hubic
 
 #transfer db
-onlynewdbfiles = glob.glob(target_db_dir + "/" + str(new_id) + "-tar.gz")
-for bb in onlynewdbfiles:
+for bb in database_list:
 	upload_backup_db_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ /usr/backup/%s" % (hubic_remote_dir, bb)).read()
 	print upload_backup_db_to_hubic
 
