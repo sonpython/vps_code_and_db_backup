@@ -5,7 +5,7 @@ import pysftp
 import re
 import socket
 
-script_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), os.sep)
+script_path = os.path.dirname(os.path.realpath(__file__)) + os.sep
 sftpinfofile = open(script_path + 'sftpinfo.txt', 'r')
 sftpinfo = list(sftpinfofile)
 
