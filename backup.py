@@ -5,7 +5,8 @@ import pysftp
 import re
 import socket
 
-sftpinfofile = open('sftpinfo.txt', 'r')
+script_path = os.path.dirname(os.path.realpath(__file__))
+sftpinfofile = open(script_path + 'sftpinfo.txt', 'r')
 sftpinfo = list(sftpinfofile)
 
 username = sftpinfo[0].rstrip('\n')
