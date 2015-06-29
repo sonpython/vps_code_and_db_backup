@@ -36,9 +36,9 @@ now = time.strftime('%Y%m%d-%H%M%S')
 
 def getnewid(filename):
 	try:
-		temp = open('temp_' + filename + '.txt', 'r+')
+		temp = open(script_path + 'temp_' + filename + '.txt', 'r+')
 	except Exception:
-		temp = open('temp_' + filename + '.txt', 'w+')
+		temp = open(script_path + 'temp_' + filename + '.txt', 'w+')
 		temp.write('0')
 		temp.seek(0)
 	old_id = temp.readline()
