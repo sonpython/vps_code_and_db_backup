@@ -5,8 +5,8 @@ import pysftp
 import re
 import socket
 
-script_path = os.path.dirname(os.path.realpath(__file__))
-sftpinfofile = open(script_path + '/sftpinfo.txt', 'r')
+script_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), os.sep)
+sftpinfofile = open(script_path + 'sftpinfo.txt', 'r')
 sftpinfo = list(sftpinfofile)
 
 username = sftpinfo[0].rstrip('\n')
@@ -123,23 +123,23 @@ else:
 ### transfer to hubic ###
 
 # refresh new token
-refesh_hubic_token = os.popen("python hubic.py --refresh").read()
+refesh_hubic_token = os.popen("python %shubic.py --refresh" % (script_path)).read()
 print refesh_hubic_token
 
 
 # transfer code
 for aa in code_list:
-	upload_backup_code_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ %s" % (hubic_remote_dir, aa)).read()
+	upload_backup_code_to_hubic = os.popen("python %shubic.py --swift -- upload default/%s/ %s" % (script_path, hubic_remote_dir, aa)).read()
 	print upload_backup_code_to_hubic
 
 #transfer db
 for bb in database_list:
-	upload_backup_db_to_hubic = os.popen("python hubic.py --swift -- upload default/%s/ %s.gz" % (hubic_remote_dir, bb)).read()
+	upload_backup_db_to_hubic = os.popen("python %shubic.py --swift -- upload default/%s/ %s.gz" % (script_path, hubic_remote_dir, bb)).read()
 	print upload_backup_db_to_hubic
 
 #delete old backup files
-filelist_hubic = os.popen("python hubic.py --swift -- list default").read().split("\n")
+filelist_hubic = os.popen("python %shubic.py --swift -- list default" % (script_path)).read().split("\n")
 for del_file in filelist_hubic[1:-1]:
 	if re.search(r"%s.*\-%d\.(tar|sql)\.gz" % (hubic_remote_dir, new_id - day_remote_store), del_file):
-		del_file_result = os.popen("python hubic.py --swift -- delete default %s" % (del_file)).read()
+		del_file_result = os.popen("python %shubic.py --swift -- delete default %s" % (script_path, del_file)).read()
 		print del_file_result
