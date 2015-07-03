@@ -26,7 +26,7 @@ target_db_dir = "/usr/backup/database"
 hubic_remote_dir = str(socket.gethostbyname(socket.gethostname()))
 
 day_store = 3
-day_remote_store = 1
+day_remote_store = 10
 
 code_list = []
 database_list = []
