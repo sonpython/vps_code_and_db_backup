@@ -1,7 +1,7 @@
 import os
 import time
 import glob
-import pysftp
+#import pysftp
 import re
 import socket
 
