@@ -94,7 +94,7 @@ for database in os.popen(database_list_command).readlines():
 	os.popen("mysqldump -u %s -p%s -h %s -e --opt -c %s | gzip -c > %s.gz" % (username, password, hostname, database, filename))
 
 del_old_db_backup_command = "rm -f {0}/*-{1}.sql.gz".format(target_db_dir, new_id - day_store)
-if os.system(del_old_backup_db_command) == 0:
+if os.system(del_old_db_backup_command) == 0:
 	print("Successful del oldest backup database file")
 else:
 	print("del old Backup file FAILED on %s" % (del_old_db_backup_command))
