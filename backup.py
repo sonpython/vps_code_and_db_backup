@@ -123,8 +123,8 @@ else:
 ### transfer to hubic ###
 
 # refresh new token
-refesh_hubic_token = os.popen("python %shubic.py --refresh" % (script_path)).read()
-print refesh_hubic_token
+#refesh_hubic_token = os.popen("python %shubic.py --refresh" % (script_path)).read()
+#print refesh_hubic_token
 
 
 # transfer code
