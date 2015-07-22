@@ -1,22 +1,21 @@
 import os
 import time
 import glob
-#import pysftp
 import re
 import socket
+import imp
 
 script_path = os.path.dirname(os.path.realpath(__file__)) + os.sep
-sftpinfofile = open(script_path + 'sftpinfo.txt', 'r')
-sftpinfo = list(sftpinfofile)
+def getVarFromFile(filename):
+	f = open(filename)
+	global rootpass
+	rootpass = imp.load_source('data', '', f)
+	f.close()
+getVarFromFile('/home/vpssim.conf')
 
-username = sftpinfo[0].rstrip('\n')
-password = sftpinfo[1].rstrip('\n')
-hostname = sftpinfo[2].rstrip('\n')
-
-# sftp_hostname = sftpinfo[3].rstrip('\n')
-# sftp_username = sftpinfo[4].rstrip('\n')
-# sftp_password = sftpinfo[5].rstrip('\n')
-# sftp_port = int(sftpinfo[6].rstrip('\n'))
+username = "root"
+password = rootpass.mariadbpass
+hostname = "localhost"
 
 source = '/home'
 
