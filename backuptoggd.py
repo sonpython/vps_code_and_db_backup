@@ -4,6 +4,7 @@ import glob
 import re
 import socket
 import imp
+import requests
 
 script_path = os.path.dirname(os.path.realpath(__file__)) + os.sep
 
