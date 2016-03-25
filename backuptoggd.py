@@ -26,7 +26,7 @@ source = '/home'
 target_dir = "/usr/backup/code"
 target_db_dir = "/usr/backup/database"
 
-your_ip = str(socket.gethostbyname(socket.gethostname()))
+your_ip = requests.get('http://ipecho.net/plain').text
 
 day_store = 1
 day_remote_store = 10
